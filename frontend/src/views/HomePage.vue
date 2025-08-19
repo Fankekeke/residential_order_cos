@@ -45,15 +45,6 @@
       </a-col>
     </a-row>
     <a-row :gutter="8" class="count-info">
-      <a-col :span="16" class="visit-count-wrapper">
-        <a-row :gutter="8">
-          <a-col :span="24">
-            <a-card hoverable>
-              <weather></weather>
-            </a-card>
-          </a-col>
-        </a-row>
-      </a-col>
       <a-col :span="8" class="project-wrapper">
         <a-card hoverable title="公告信息">
           <div>
