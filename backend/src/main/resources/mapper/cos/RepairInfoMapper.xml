@@ -28,7 +28,6 @@
         wi.name AS workerName,
         wi.phone AS workerPhone,
         wi.image AS workerImage,
-        gr.step AS auditStatus,
         ei.id as evaluateFlag,
         ci.id as complaintFlag
         FROM
@@ -36,7 +35,6 @@
         LEFT JOIN owner_info oi ON ( oi.id = ri.user_id )
         LEFT JOIN houses_info hi ON ( hi.id = ri.houses_id )
         LEFT JOIN worker_info wi ON ( wi.id = ri.worker )
-        LEFT JOIN goods_request gr ON ( gr.num = ri.request_no )
         LEFT JOIN evaluate_info ei ON ( ei.order_id = ri.id )
         LEFT JOIN complaint_info ci ON (ci.order_id = ri.id)
         WHERE
@@ -44,11 +42,20 @@
         <if test="repairInfo.name != null and repairInfo.name != ''">
             AND oi.name LIKE CONCAT('%',#{repairInfo.name},'%')
         </if>
+        <if test="repairInfo.staffName != null and repairInfo.staffName != ''">
+            AND wi.name LIKE CONCAT('%',#{repairInfo.staffName},'%')
+        </if>
         <if test="repairInfo.phone != null and repairInfo.phone != ''">
             AND oi.phone LIKE CONCAT('%',#{repairInfo.phone},'%')
         </if>
         <if test="repairInfo.repairStatus != null and repairInfo.repairStatus != ''">
             AND ri.repair_status = #{repairInfo.repairStatus}
+        </if>
+        <if test="repairInfo.repairType != null and repairInfo.repairType != ''">
+            AND ri.repair_type = #{repairInfo.repairType}
+        </if>
+        <if test="repairInfo.repairLevel != null and repairInfo.repairLevel != ''">
+            AND ri.repair_level = #{repairInfo.repairLevel}
         </if>
         <if test="repairInfo.userId != null and repairInfo.userId != ''">
             AND oi.user_id = #{repairInfo.userId}
@@ -129,14 +136,13 @@
     <!-- 本月收益 -->
     <select id="selectIncomeMonth" resultType="java.math.BigDecimal">
         SELECT
-            IFNULL( SUM( pr.total_price ), 0 )
+            IFNULL( COUNT( pr.id ), 0 )
         FROM
-            repair_info pr
+            complaint_info pr
         WHERE
-                DATE_FORMAT( pr.pay_date, '%Y%m' ) = DATE_FORMAT(
+                DATE_FORMAT( pr.create_date, '%Y%m' ) = DATE_FORMAT(
                     CURDATE(),
                     '%Y%m')
-          AND pr.repair_status = 2
     </select>
 
     <!-- 本月工单 -->
@@ -155,14 +161,13 @@
     <!-- 本年收益 -->
     <select id="selectIncomeYear" resultType="java.math.BigDecimal">
         SELECT
-            IFNULL( SUM( pr.total_price ), 0 )
+            IFNULL( COUNT( pr.id ), 0 )
         FROM
-            repair_info pr
+            complaint_info pr
         WHERE
-                DATE_FORMAT( pr.pay_date, '%Y' ) = DATE_FORMAT(
+                DATE_FORMAT( pr.create_date, '%Y' ) = DATE_FORMAT(
                     CURDATE(),
                     '%Y')
-          AND pr.repair_status = 2
     </select>
 
     <!-- 本年工单 -->
@@ -178,10 +183,10 @@
           AND oi.repair_status = 2
     </select>
 
-    <!-- 获取缴费总收益 -->
-    <select id="selectAmountPrice" resultType="java.math.BigDecimal">
+    <!-- 获取总维修工单 -->
+    <select id="selectAmountPrice" resultType="java.lang.Integer">
         SELECT
-            IFNULL(SUM(pr.total_price), 0)
+            IFNULL(COUNT(pr.id), 0)
         FROM
             repair_info pr
         WHERE pr.repair_status = 2
@@ -191,7 +196,7 @@
     <select id="selectPaymentRecord" resultType="java.util.LinkedHashMap">
         SELECT
             DATE_FORMAT( spo.days, '%m-%d' ) AS days,
-            IFNULL(SUM(pr.total_price), 0) AS count
+            IFNULL(COUNT(pr.id), 0) AS count
         FROM
             (
                 SELECT
@@ -214,9 +219,8 @@
                     DATE_SUB( curdate(), INTERVAL + 8 DAY ) UNION
                 SELECT
                     DATE_SUB( curdate(), INTERVAL + 9 DAY )) spo
-                LEFT JOIN repair_info pr ON (
-                        DATE_FORMAT( pr.pay_date, '%Y-%m-%d' ) = DATE_FORMAT( spo.days, '%Y-%m-%d' )
-                    AND pr.repair_status = '2'
+                LEFT JOIN complaint_info pr ON (
+                        DATE_FORMAT( pr.create_date, '%Y-%m-%d' ) = DATE_FORMAT( spo.days, '%Y-%m-%d' )
                 )
         GROUP BY
             days

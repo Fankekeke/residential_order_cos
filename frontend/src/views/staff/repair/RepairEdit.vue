@@ -12,6 +12,14 @@
       </a-button>
     </template>
     <div style="font-size: 13px" v-if="repairData !== null">
+      <div style="padding-left: 24px;padding-right: 24px;margin-bottom: 50px;margin-top: 50px">
+        <a-steps :current="current" progress-dot size="small">
+          <a-step title="未派修" />
+          <a-step title="已派修" />
+          <a-step title="已处理" />
+          <a-step title="已完成" />
+        </a-steps>
+      </div>
       <a-row style="padding-left: 24px;padding-right: 24px;">
         <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">基础信息</span></a-col>
         <a-col :span="8"><b>用户姓名：</b>
@@ -70,7 +78,8 @@
         <a-col :span="8"><b>维修状态：</b>
           <span v-if="repairData.repairStatus == 0">未派修</span>
           <span v-if="repairData.repairStatus == 1">已派修</span>
-          <span v-if="repairData.repairStatus == 2">已完成</span>
+          <span v-if="repairData.repairStatus == 2">已处理</span>
+          <span v-if="repairData.repairStatus == 3">已完成</span>
         </a-col>
         <a-col :span="8"><b>创建时间：</b>
           {{ repairData.createDate }}
@@ -190,13 +199,12 @@ export default {
   },
   watch: {
     repairEditVisiable: function (value) {
-      if (value && this.repairData.images !== null && this.repairData.images !== '') {
+      if (value) {
+        this.current = this.repairData.repairStatus
         this.imagesInit(this.repairData.images)
-        if (this.repairData.requestNo != null) {
-          this.getGoodsByNum(this.repairData.requestNo)
-        }
         this.deviceId = this.repairData.deviceId
       }
+
     }
   },
   computed: {
@@ -260,7 +268,8 @@ export default {
       deviceId: null,
       workerList: '',
       deviceList: [],
-      goodsList: []
+      goodsList: [],
+      current: 0
     }
   },
   methods: {

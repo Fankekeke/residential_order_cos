@@ -7,11 +7,11 @@
             <a-col :span="6">
               <a-card hoverable>
                 <a-row>
-                  <a-col :span="24" style="font-size: 13px;margin-bottom: 8px;font-family: SimHei">本月收益</a-col>
+                  <a-col :span="24" style="font-size: 13px;margin-bottom: 8px;font-family: SimHei">本月投诉</a-col>
                   <a-col :span="4"><a-icon type="arrow-up" style="font-size: 30px;margin-top: 3px"/></a-col>
                   <a-col :span="18" style="font-size: 28px;font-weight: 500;font-family: SimHei">
                     {{ titleData.incomeMonth }}
-                    <span style="font-size: 20px;margin-top: 3px">元</span>
+                    <span style="font-size: 20px;margin-top: 3px">件</span>
                   </a-col>
                 </a-row>
               </a-card>
@@ -31,11 +31,11 @@
             <a-col :span="6">
               <a-card hoverable>
                 <a-row>
-                  <a-col :span="24" style="font-size: 13px;margin-bottom: 8px;font-family: SimHei">本年收益</a-col>
+                  <a-col :span="24" style="font-size: 13px;margin-bottom: 8px;font-family: SimHei">本年投诉</a-col>
                   <a-col :span="4"><a-icon type="arrow-up" style="font-size: 30px;margin-top: 3px"/></a-col>
                   <a-col :span="18" style="font-size: 28px;font-weight: 500;font-family: SimHei">
                     {{ titleData.incomeYear }}
-                    <span style="font-size: 20px;margin-top: 3px">元</span>
+                    <span style="font-size: 20px;margin-top: 3px">件</span>
                   </a-col>
                 </a-row>
               </a-card>
@@ -143,7 +143,7 @@ export default {
           enabled: false
         },
         title: {
-          text: '近十天内费用单统计',
+          text: '近十天投诉统计',
           align: 'left'
         },
         markers: {
@@ -162,7 +162,7 @@ export default {
           height: 300
         },
         title: {
-          text: '近十天费用金额统计',
+          text: '近十天投诉统计',
           align: 'left'
         },
         plotOptions: {

@@ -119,11 +119,11 @@ public class RepairInfoServiceImpl extends ServiceImpl<RepairInfoMapper, RepairI
         // 管理员展示信息
         LinkedHashMap<String, Object> result = new LinkedHashMap<>();
 
-        // 本月收益
+        // 本月投诉
         BigDecimal incomeMonth = baseMapper.selectIncomeMonth();
         // 本月工单
         Integer workOrderMonth = baseMapper.selectWorkOrderMonth();
-        // 本年收益
+        // 本年投诉
         BigDecimal incomeYear = baseMapper.selectIncomeYear();
         // 本年工单
         Integer workOrderYear = baseMapper.selectWorkOrderYear();
@@ -133,9 +133,9 @@ public class RepairInfoServiceImpl extends ServiceImpl<RepairInfoMapper, RepairI
         Integer staffNum = housesInfoService.count();
         // 员工数量
         Integer roomNum = workerInfoService.count();
-        // 总收益
-        BigDecimal amount = baseMapper.selectAmountPrice();
-        // 十天内缴费记录
+        // 总工单
+        Integer amount = baseMapper.selectAmountPrice();
+        // 十天内投诉记录
         List<LinkedHashMap<String, Object>> paymentRecord = baseMapper.selectPaymentRecord();
         // 十天内工单数量
         List<LinkedHashMap<String, Object>> orderRecord = baseMapper.selectOrderRecord();

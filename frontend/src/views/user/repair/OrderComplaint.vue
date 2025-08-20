@@ -67,7 +67,8 @@
         <a-col :span="8"><b>维修状态：</b>
           <span v-if="repairData.repairStatus == 0">未派修</span>
           <span v-if="repairData.repairStatus == 1">已派修</span>
-          <span v-if="repairData.repairStatus == 2">已完成</span>
+          <span v-if="repairData.repairStatus == 2">已处理</span>
+          <span v-if="repairData.repairStatus == 3">已完成</span>
         </a-col>
         <a-col :span="8"><b>创建时间：</b>
           {{ repairData.createDate }}

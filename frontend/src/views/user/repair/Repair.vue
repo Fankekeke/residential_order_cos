@@ -7,18 +7,41 @@
           <div :class="advanced ? null: 'fold'">
             <a-col :md="6" :sm="24">
               <a-form-item
-                label="用户姓名"
+                label="维修工姓名"
                 :labelCol="{span: 5}"
                 :wrapperCol="{span: 18, offset: 1}">
-                <a-input v-model="queryParams.name"/>
+                <a-input v-model="queryParams.staffName"/>
               </a-form-item>
             </a-col>
             <a-col :md="6" :sm="24">
               <a-form-item
-                label="联系方式"
+                label="紧急程度"
                 :labelCol="{span: 5}"
                 :wrapperCol="{span: 18, offset: 1}">
-                <a-input v-model="queryParams.phone"/>
+                <a-select v-model="queryParams.repairLevel" allowClear>
+                  <a-select-option value="1">急</a-select-option>
+                  <a-select-option value="2">重</a-select-option>
+                  <a-select-option value="3">轻</a-select-option>
+                  <a-select-option value="4">缓</a-select-option>
+                </a-select>
+              </a-form-item>
+            </a-col>
+            <a-col :md="6" :sm="24">
+              <a-form-item
+                label="维修类型"
+                :labelCol="{span: 5}"
+                :wrapperCol="{span: 18, offset: 1}">
+                <a-select v-model="queryParams.repairType" allowClear>
+                  <a-select-option value="1">上下水管道</a-select-option>
+                  <a-select-option value="2">落水管</a-select-option>
+                  <a-select-option value="3">水箱</a-select-option>
+                  <a-select-option value="4">天线</a-select-option>
+                  <a-select-option value="5">供电线路</a-select-option>
+                  <a-select-option value="6">通讯线路</a-select-option>
+                  <a-select-option value="7">照明</a-select-option>
+                  <a-select-option value="8">供气线路</a-select-option>
+                  <a-select-option value="9">消防设施</a-select-option>
+                </a-select>
               </a-form-item>
             </a-col>
             <a-col :md="6" :sm="24">
@@ -29,7 +52,8 @@
                 <a-select v-model="queryParams.repairStatus" allowClear>
                   <a-select-option value="0">未派修</a-select-option>
                   <a-select-option value="1">已派修</a-select-option>
-                  <a-select-option value="2">已完成</a-select-option>
+                  <a-select-option value="2">已处理</a-select-option>
+                  <a-select-option value="3">已完成</a-select-option>
                 </a-select>
               </a-form-item>
             </a-col>
@@ -270,6 +294,8 @@ export default {
             case 1:
               return <a-tag color="yellow">已派修</a-tag>
             case 2:
+              return <a-tag color="blue">已处理</a-tag>
+            case 3:
               return <a-tag color="green">已完成</a-tag>
             default:
               return '- -'
@@ -461,6 +487,12 @@ export default {
       }
       if (params.repairStatus === undefined) {
         delete params.repairStatus
+      }
+      if (params.repairLevel === undefined) {
+        delete params.repairLevel
+      }
+      if (params.repairType === undefined) {
+        delete params.repairType
       }
       params.userId = this.currentUser.userId
       this.$get('/cos/repair-info/page', {

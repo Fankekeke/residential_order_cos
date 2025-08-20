@@ -99,4 +99,7 @@ public class RepairInfo implements Serializable {
     @TableField(exist = false)
     private Integer staffId;
 
+    @TableField(exist = false)
+    private String staffName;
+
 }

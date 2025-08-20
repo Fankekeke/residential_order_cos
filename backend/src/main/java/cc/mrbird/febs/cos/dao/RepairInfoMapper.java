@@ -32,7 +32,7 @@ public interface RepairInfoMapper extends BaseMapper<RepairInfo> {
     IPage<LinkedHashMap<String, Object>> selectHouseRepairPage(Page<HousesInfo> page, RepairInfo repairInfo);
 
     /**
-     * 本月收益
+     * 本月投诉
      *
      * @return 结果
      */
@@ -46,7 +46,7 @@ public interface RepairInfoMapper extends BaseMapper<RepairInfo> {
     Integer selectWorkOrderMonth();
 
     /**
-     * 本年收益
+     * 本年投诉
      *
      * @return 结果
      */
@@ -60,14 +60,14 @@ public interface RepairInfoMapper extends BaseMapper<RepairInfo> {
     Integer selectWorkOrderYear();
 
     /**
-     * 获取缴费总收益
+     * 获取总维修工单
      *
      * @return 结果
      */
-    BigDecimal selectAmountPrice();
+    Integer selectAmountPrice();
 
     /**
-     * 查询十天内缴费统计
+     * 查询十天内投诉统计
      *
      * @return 结果
      */
@@ -81,7 +81,7 @@ public interface RepairInfoMapper extends BaseMapper<RepairInfo> {
     List<LinkedHashMap<String, Object>> selectOrderRecord();
 
     /**
-     * 按月统计收益统计
+     * 按月统计投诉统计
      *
      * @param year  年份
      * @param month 月份

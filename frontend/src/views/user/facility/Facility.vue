@@ -15,33 +15,10 @@
             </a-col>
             <a-col :md="6" :sm="24">
               <a-form-item
-                label="紧急程度"
+                label="联系方式"
                 :labelCol="{span: 5}"
                 :wrapperCol="{span: 18, offset: 1}">
-                <a-select v-model="queryParams.repairLevel" allowClear>
-                  <a-select-option value="1">急</a-select-option>
-                  <a-select-option value="2">重</a-select-option>
-                  <a-select-option value="3">轻</a-select-option>
-                  <a-select-option value="4">缓</a-select-option>
-                </a-select>
-              </a-form-item>
-            </a-col>
-            <a-col :md="6" :sm="24">
-              <a-form-item
-                label="维修类型"
-                :labelCol="{span: 5}"
-                :wrapperCol="{span: 18, offset: 1}">
-                <a-select v-model="queryParams.repairType" allowClear>
-                  <a-select-option value="1">上下水管道</a-select-option>
-                  <a-select-option value="2">落水管</a-select-option>
-                  <a-select-option value="3">水箱</a-select-option>
-                  <a-select-option value="4">天线</a-select-option>
-                  <a-select-option value="5">供电线路</a-select-option>
-                  <a-select-option value="6">通讯线路</a-select-option>
-                  <a-select-option value="7">照明</a-select-option>
-                  <a-select-option value="8">供气线路</a-select-option>
-                  <a-select-option value="9">消防设施</a-select-option>
-                </a-select>
+                <a-input v-model="queryParams.phone"/>
               </a-form-item>
             </a-col>
             <a-col :md="6" :sm="24">
@@ -106,7 +83,10 @@
           </template>
         </template>
         <template slot="operation" slot-scope="text, record">
-          <a-icon type="fork" @click="edit(record)" title="修 改"></a-icon>
+          <a-icon type="audit" @click="edit(record)" title="修 改"></a-icon>
+          <a-icon v-if="record.repairStatus ==  2 && record.payDate == null" type="alipay" @click="orderPay(record)" title="支 付" style="margin-left: 15px"></a-icon>
+          <a-icon v-if="record.evaluateFlag == null && record.repairStatus ==  2 && record.payDate != null" type="reconciliation" theme="twoTone" twoToneColor="#4a9ff5" @click="orderEvaluateOpen(record)" title="评 价" style="margin-left: 15px"></a-icon>
+          <a-icon v-if="record.complaintFlag == null && record.repairStatus ==  2 && record.payDate != null" type="alert" theme="twoTone" twoToneColor="#4a9ff5" @click="orderComplaintOpen(record)" title="投诉" style="margin-left: 15px"></a-icon>
         </template>
       </a-table>
     </div>
@@ -128,21 +108,35 @@
       :repairShow="repairView.visiable"
       :repairData="repairView.data">
     </repair-view>
+    <order-evaluate
+      @close="handleorderAddClose"
+      @success="handleorderAddSuccess"
+      :evaluateAddVisiable="orderEvaluateView.visiable"
+      :repairData="orderEvaluateView.data">
+    </order-evaluate>
+    <order-complaint
+      @close="handleorderComplaintAddClose"
+      @success="handleorderComplaintAddSuccess"
+      :evaluateAddVisiable="orderComplaintView.visiable"
+      :repairData="orderComplaintView.data">
+    </order-complaint>
   </a-card>
 </template>
 
 <script>
 import RangeDate from '@/components/datetime/RangeDate'
-import RepairAdd from './RepairAdd'
-import RepairEdit from './RepairEdit'
-import RepairView from './RepairView'
+import RepairAdd from './FacilityAdd.vue'
+import RepairEdit from './FacilityEdit.vue'
+import RepairView from './FacilityView.vue'
+import OrderEvaluate from './OrderEvaluate'
+import OrderComplaint from './OrderComplaint'
 import {mapState} from 'vuex'
 import moment from 'moment'
 moment.locale('zh-cn')
 
 export default {
   name: 'repair',
-  components: {RepairAdd, RepairEdit, RepairView, RangeDate},
+  components: {RepairAdd, RepairEdit, RepairView, OrderEvaluate, OrderComplaint, RangeDate},
   data () {
     return {
       advanced: false,
@@ -154,6 +148,14 @@ export default {
         data: null
       },
       repairView: {
+        visiable: false,
+        data: null
+      },
+      orderEvaluateView: {
+        visiable: false,
+        data: null
+      },
+      orderComplaintView: {
         visiable: false,
         data: null
       },
@@ -190,6 +192,10 @@ export default {
         ellipsis: true,
         dataIndex: 'name'
       }, {
+        title: '联系方式',
+        ellipsis: true,
+        dataIndex: 'phone'
+      }, {
         title: '紧急程度',
         dataIndex: 'repairLevel',
         customRender: (text, row, index) => {
@@ -206,10 +212,6 @@ export default {
               return '- -'
           }
         }
-      }, {
-        title: '联系方式',
-        ellipsis: true,
-        dataIndex: 'phone'
       }, {
         title: '维修类型',
         dataIndex: 'repairType',
@@ -298,6 +300,47 @@ export default {
     this.fetch()
   },
   methods: {
+    orderComplaintOpen (row) {
+      this.orderComplaintView.data = row
+      this.orderComplaintView.visiable = true
+    },
+    handleorderComplaintAddClose () {
+      this.orderComplaintView.visiable = false
+    },
+    handleorderComplaintAddSuccess () {
+      this.orderComplaintView.visiable = false
+      this.$message.success('工单投诉成功')
+      this.search()
+    },
+    orderEvaluateOpen (row) {
+      this.orderEvaluateView.data = row
+      this.orderEvaluateView.visiable = true
+    },
+    handleorderAddClose () {
+      this.orderEvaluateView.visiable = false
+    },
+    handleorderAddSuccess () {
+      this.orderEvaluateView.visiable = false
+      this.$message.success('新增评价成功')
+      this.search()
+    },
+    orderPay (record) {
+      let data = { outTradeNo: record.code, subject: `${record.createDate}缴费信息`, totalAmount: record.totalPrice, body: '' }
+      this.$post('/cos/pay/alipay', data).then((r) => {
+        // console.log(r.data.msg)
+        // 添加之前先删除一下，如果单页面，页面不刷新，添加进去的内容会一直保留在页面中，二次调用form表单会出错
+        const divForm = document.getElementsByTagName('div')
+        if (divForm.length) {
+          document.body.removeChild(divForm[0])
+        }
+        const div = document.createElement('div')
+        div.innerHTML = r.data.msg // data就是接口返回的form 表单字符串
+        // console.log(div.innerHTML)
+        document.body.appendChild(div)
+        document.forms[0].setAttribute('target', '_self') // 新开窗口跳转
+        document.forms[0].submit()
+      })
+    },
     view (row) {
       this.repairView.data = row
       this.repairView.visiable = true
@@ -422,12 +465,7 @@ export default {
       if (params.repairStatus === undefined) {
         delete params.repairStatus
       }
-      if (params.repairLevel === undefined) {
-        delete params.repairLevel
-      }
-      if (params.repairType === undefined) {
-        delete params.repairType
-      }
+      params.userId = this.currentUser.userId
       this.$get('/cos/repair-info/page', {
         ...params
       }).then((r) => {
