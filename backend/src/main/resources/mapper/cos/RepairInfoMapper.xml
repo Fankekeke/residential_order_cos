@@ -29,7 +29,8 @@
         wi.phone AS workerPhone,
         wi.image AS workerImage,
         ei.id as evaluateFlag,
-        ci.id as complaintFlag
+        ci.id as complaintFlag,
+        bi.name AS buildRooms
         FROM
         repair_info ri
         LEFT JOIN owner_info oi ON ( oi.id = ri.user_id )
@@ -37,8 +38,12 @@
         LEFT JOIN worker_info wi ON ( wi.id = ri.worker )
         LEFT JOIN evaluate_info ei ON ( ei.order_id = ri.id )
         LEFT JOIN complaint_info ci ON (ci.order_id = ri.id)
+        LEFT JOIN building_info bi ON ( bi.id = hi.building_id )
         WHERE
         1 = 1
+        <if test="repairInfo.buildRooms != null and repairInfo.buildRooms != ''">
+            AND bi.name LIKE CONCAT('%',#{repairInfo.buildRooms},'%')
+        </if>
         <if test="repairInfo.name != null and repairInfo.name != ''">
             AND oi.name LIKE CONCAT('%',#{repairInfo.name},'%')
         </if>

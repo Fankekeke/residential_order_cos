@@ -7,10 +7,10 @@
           <div :class="advanced ? null: 'fold'">
             <a-col :md="6" :sm="24">
               <a-form-item
-                label="用户姓名"
+                label="所属楼宇"
                 :labelCol="{span: 5}"
                 :wrapperCol="{span: 18, offset: 1}">
-                <a-input v-model="queryParams.name"/>
+                <a-input v-model="queryParams.buildRooms"/>
               </a-form-item>
             </a-col>
             <a-col :md="6" :sm="24">
@@ -209,7 +209,7 @@ export default {
       }, {
         title: '联系方式',
         ellipsis: true,
-        dataIndex: 'phone'
+        dataIndex: 'buildRooms'
       }, {
         title: '维修类型',
         dataIndex: 'repairType',

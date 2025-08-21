@@ -54,7 +54,7 @@ public class RepairInfo implements Serializable {
     /**
      * 维修状态 -1.未支付 0.未派修 1.已派修 2.已完成
      */
-    private Integer repairStatus;
+    private String repairStatus;
 
     /**
      * 紧急程度（1.急 2.重 3.轻 4.缓）
@@ -101,5 +101,8 @@ public class RepairInfo implements Serializable {
 
     @TableField(exist = false)
     private String staffName;
+
+    @TableField(exist = false)
+    private String buildRooms;
 
 }

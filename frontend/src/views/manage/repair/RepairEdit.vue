@@ -1,5 +1,5 @@
 <template>
-  <a-modal v-model="show" title="选择工作人员" @cancel="onClose" :width="800">
+  <a-modal v-model="show" title="工单详情" @cancel="onClose" :width="800">
     <template slot="footer">
       <a-button key="back" @click="onClose">
         关闭
@@ -77,6 +77,12 @@
         </a-col>
         <a-col :span="8"><b>创建时间：</b>
           {{ repairData.createDate }}
+        </a-col>
+      </a-row>
+      <br/>
+      <a-row style="padding-left: 24px;padding-right: 24px;">
+        <a-col :span="24"><b>所属楼宇：</b>
+          {{ repairData.buildRooms }}
         </a-col>
       </a-row>
       <br/>

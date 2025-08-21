@@ -45,7 +45,7 @@
       </a-col>
     </a-row>
     <a-row :gutter="8" class="count-info">
-      <a-col :span="8" class="project-wrapper">
+      <a-col :span="16" class="project-wrapper">
         <a-card hoverable title="公告信息">
           <div>
             <a-list item-layout="vertical" :pagination="pagination" :data-source="bulletinList">
@@ -63,7 +63,9 @@
             </a-list>
           </div>
         </a-card>
-        <a-carousel effect="fade" style="margin-top: 35px">
+      </a-col>
+      <a-col :span="8" class="weather-wrapper">
+        <a-carousel effect="fade">
           <div style="width: 100%;height: 300px"><img :src="'http://127.0.0.1:9527/imagesWeb/1.jpg'" style="width: 100%;height: 100%;object-fit:cover;" /></div>
           <div style="width: 100%;height: 300px"><img :src="'http://127.0.0.1:9527/imagesWeb/2.jpg'" style="width: 100%;height: 100%;object-fit:cover;" /></div>
           <div style="width: 100%;height: 300px"><img :src="'http://127.0.0.1:9527/imagesWeb/3.jpg'" style="width: 100%;height: 100%;object-fit:cover;" /></div>

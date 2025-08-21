@@ -108,18 +108,6 @@
       :repairShow="repairView.visiable"
       :repairData="repairView.data">
     </repair-view>
-    <order-evaluate
-      @close="handleorderAddClose"
-      @success="handleorderAddSuccess"
-      :evaluateAddVisiable="orderEvaluateView.visiable"
-      :repairData="orderEvaluateView.data">
-    </order-evaluate>
-    <order-complaint
-      @close="handleorderComplaintAddClose"
-      @success="handleorderComplaintAddSuccess"
-      :evaluateAddVisiable="orderComplaintView.visiable"
-      :repairData="orderComplaintView.data">
-    </order-complaint>
   </a-card>
 </template>
 
@@ -128,15 +116,13 @@ import RangeDate from '@/components/datetime/RangeDate'
 import RepairAdd from './FacilityAdd.vue'
 import RepairEdit from './FacilityEdit.vue'
 import RepairView from './FacilityView.vue'
-import OrderEvaluate from './OrderEvaluate'
-import OrderComplaint from './OrderComplaint'
 import {mapState} from 'vuex'
 import moment from 'moment'
 moment.locale('zh-cn')
 
 export default {
   name: 'repair',
-  components: {RepairAdd, RepairEdit, RepairView, OrderEvaluate, OrderComplaint, RangeDate},
+  components: {RepairAdd, RepairEdit, RepairView, RangeDate},
   data () {
     return {
       advanced: false,
