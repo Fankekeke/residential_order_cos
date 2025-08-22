@@ -1,10 +1,7 @@
 <template>
   <a-modal v-model="show" title="维修任务" @cancel="onClose" :width="1000">
     <template slot="footer">
-      <a-button key="back1" @click="repairRequest" v-if="repairData.requestNo == null">
-        申请
-      </a-button>
-      <a-button key="back2" @click="repairDown" type="primary" v-if="repairData.requestNo != null && repairData.auditStatus != null && repairData.auditStatus == 1 && repairData.repairStatus == 1">
+      <a-button key="back2" @click="repairDown" type="primary" v-if="repairData.repairStatus == 1">
         维修完成
       </a-button>
       <a-button key="back" @click="onClose" type="danger">
@@ -121,52 +118,15 @@
       </a-row>
       <br/>
       <br/>
-      <a-row style="padding-left: 24px;padding-right: 24px;" :gutter="15">
-        <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">选择维修设备</span></a-col>
+      <a-row style="padding-left: 24px;padding-right: 24px;" :gutter="15" v-if="repairData.totalPrice == null || repairData.payDate == null">
+        <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">填写维修费用（元）</span></a-col>
         <a-col :span="10">
-          <a-select v-model="deviceId" style="width: 100%">
-            <a-select-option v-for="(item, index) in deviceList" :value="item.id" :key="index">{{ item.deviceName }}</a-select-option>
-          </a-select>
+          <a-input-number v-model="cost" :min="1" placeholder="请填写维修费用" style="width: 100%"/>
         </a-col>
-      </a-row>
-      <br/>
-      <br/>
-      <a-row style="padding-left: 24px;padding-right: 24px;" :gutter="15" v-if="repairData.requestNo == null">
-        <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">选择维修物料</span></a-col>
-        <a-col :span="24">
-          <a-table :columns="columns" :data-source="dataList">
-            <template slot="nameShow" slot-scope="text, record">
-              <a-select style="width: 100%" @change="handleChange($event, record)">
-                <a-select-option v-for="(item, index) in goodsList" :key="index" :value="item.id">{{ item.name }}</a-select-option>
-              </a-select>
-            </template>
-            <template slot="typeShow" slot-scope="text, record">
-              <a-input disabled v-model="record.type"></a-input>
-            </template>
-            <template slot="typeIdShow" slot-scope="text, record">
-              <a-select disabled v-model="record.typeId" style="width: 100%">
-                <a-select-option v-for="(item, index) in consumableType" :value="item.id" :key="index">{{ item.name }}</a-select-option>
-              </a-select>
-            </template>
-            <template slot="unitShow" slot-scope="text, record">
-              <a-input disabled v-model="record.unit"></a-input>
-            </template>
-            <template slot="amountShow" slot-scope="text, record">
-              <a-input-number v-model="record.amount" :min="1" :step="1"/>
-            </template>
-            <template slot="priceShow" slot-scope="text, record">
-              <a-input-number disabled v-model="record.price" :min="1"/>
-            </template>
-          </a-table>
-          <a-button @click="dataAdd" type="primary" ghost size="large" style="margin-top: 10px;width: 100%">
-            新增物品
+        <a-col :span="3">
+          <a-button key="back" @click="setRepairCost" type="primary">
+            提交费用
           </a-button>
-        </a-col>
-      </a-row>
-      <a-row style="padding-left: 24px;padding-right: 24px;" :gutter="15" v-if="repairData.requestNo != null">
-        <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">物品详情</span></a-col>
-        <a-col :span="24">
-          <a-table :columns="columns" :data-source="goodsList"></a-table>
         </a-col>
       </a-row>
     </div>
@@ -200,11 +160,11 @@ export default {
   watch: {
     repairEditVisiable: function (value) {
       if (value) {
+        this.cost = this.repairData.totalPrice
         this.current = this.repairData.repairStatus
         this.imagesInit(this.repairData.images)
         this.deviceId = this.repairData.deviceId
       }
-
     }
   },
   computed: {
@@ -249,9 +209,6 @@ export default {
     }
   },
   mounted () {
-    this.getGoodsList()
-    this.getDeviceList()
-    this.getConsumableType()
   },
   data () {
     return {
@@ -269,21 +226,23 @@ export default {
       workerList: '',
       deviceList: [],
       goodsList: [],
-      current: 0
+      current: 0,
+      cost: 1
     }
   },
   methods: {
-    getGoodsByNum (num) {
-      if (num) {
-        this.$get('/cos/goods-belong/getGoodsDetailByNum', { num }).then((r) => {
-          this.goodsList = r.data.data
-        })
-      }
-    },
     repairDown () {
       this.$get('/cos/repair-info/down', { repairId: this.repairData.id }).then((r) => {
-        this.dataList = []
-        this.deviceId = null
+        this.$emit('success')
+      })
+    },
+    setRepairCost () {
+      if (!this.cost) {
+        this.$message.warning('请填写维修费用')
+        return false
+      }
+      this.$get('/cos/repair-info/setRepairCost', { repairId: this.repairData.id, cost: this.cost }).then((r) => {
+        this.cost = 1
         this.$emit('success')
       })
     },

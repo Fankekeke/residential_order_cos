@@ -44,6 +44,18 @@ public class RepairInfoController {
     }
 
     /**
+     * 设置维修价格
+     *
+     * @param repairId 维修id
+     * @param cost     价格
+     * @return 结果
+     */
+    @GetMapping("/setRepairCost")
+    public R setRepairCost(Integer repairId, BigDecimal cost) {
+        return R.ok(repairInfoService.update(Wrappers.<RepairInfo>lambdaUpdate().set(RepairInfo::getTotalPrice, cost).eq(RepairInfo::getId, repairId)));
+    }
+
+    /**
      * 添加维修信息
      *
      * @param repairInfo 维修信息
@@ -100,6 +112,17 @@ public class RepairInfoController {
     @GetMapping("/down")
     public R down(Integer repairId) {
         return R.ok(repairInfoService.update(Wrappers.<RepairInfo>lambdaUpdate().set(RepairInfo::getRepairStatus, 2).set(RepairInfo::getRepairDate, DateUtil.formatDateTime(new Date())).eq(RepairInfo::getId, repairId)));
+    }
+
+    /**
+     * 维修完成
+     *
+     * @param repairId
+     * @return
+     */
+    @GetMapping("/over")
+    public R repairOver(Integer repairId) {
+        return R.ok(repairInfoService.update(Wrappers.<RepairInfo>lambdaUpdate().set(RepairInfo::getRepairStatus, 3).eq(RepairInfo::getId, repairId)));
     }
 
     /**

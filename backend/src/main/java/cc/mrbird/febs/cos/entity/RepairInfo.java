@@ -86,6 +86,7 @@ public class RepairInfo implements Serializable {
      * 申请单号
      */
     private String requestNo;
+    private String type;
 
     @TableField(exist = false)
     private String name;

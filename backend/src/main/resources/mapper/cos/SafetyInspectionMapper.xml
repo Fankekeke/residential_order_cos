@@ -30,6 +30,9 @@
         <if test="safetyInspection.checkType != null and safetyInspection.checkType != ''">
             AND si.check_type = #{safetyInspection.checkType}
         </if>
+        <if test="safetyInspection.staffId != null">
+            AND wi.user_id = #{safetyInspection.staffId}
+        </if>
         order by
         si.check_date desc
     </select>

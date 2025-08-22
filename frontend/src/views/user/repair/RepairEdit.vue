@@ -4,6 +4,9 @@
       <a-button key="back" @click="onClose">
         关闭
       </a-button>
+      <a-button key="back" type="primary" @click="repairDown" v-if="repairData.repairStatus == 2">
+        完成结束
+      </a-button>
     </template>
     <div style="font-size: 13px" v-if="repairData !== null">
       <div style="padding-left: 24px;padding-right: 24px;margin-bottom: 50px;margin-top: 50px">
@@ -207,6 +210,11 @@ export default {
     }
   },
   methods: {
+    repairDown () {
+      this.$get('/cos/repair-info/over', { repairId: this.repairData.id }).then((r) => {
+        this.$emit('success')
+      })
+    },
     getWorkerList () {
       this.$get('/cos/worker-info/list', { type: 2 }).then((r) => {
         this.workerList = r.data.data

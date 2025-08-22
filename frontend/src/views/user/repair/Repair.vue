@@ -107,7 +107,7 @@
         </template>
         <template slot="operation" slot-scope="text, record">
           <a-icon type="audit" @click="edit(record)" title="修 改"></a-icon>
-          <a-icon v-if="record.repairStatus ==  2 && record.payDate == null" type="alipay" @click="orderPay(record)" title="支 付" style="margin-left: 15px"></a-icon>
+          <a-icon v-if="record.repairStatus == 1 && record.payDate == null" type="alipay" @click="orderPay(record)" title="支 付" style="margin-left: 15px"></a-icon>
           <a-icon v-if="record.evaluateFlag == null && record.repairStatus ==  2 && record.payDate != null" type="reconciliation" theme="twoTone" twoToneColor="#4a9ff5" @click="orderEvaluateOpen(record)" title="评 价" style="margin-left: 15px"></a-icon>
           <a-icon v-if="record.complaintFlag == null && record.repairStatus ==  2 && record.payDate != null" type="alert" theme="twoTone" twoToneColor="#4a9ff5" @click="orderComplaintOpen(record)" title="投诉" style="margin-left: 15px"></a-icon>
         </template>
@@ -495,6 +495,7 @@ export default {
         delete params.repairType
       }
       params.userId = this.currentUser.userId
+      params.type = 1
       this.$get('/cos/repair-info/page', {
         ...params
       }).then((r) => {

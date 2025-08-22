@@ -43,8 +43,8 @@
     </div>
     <div>
       <div class="operator">
-        <a-button type="primary" ghost @click="add">新增</a-button>
-        <a-button @click="batchDelete">删除</a-button>
+<!--        <a-button type="primary" ghost @click="add">新增</a-button>-->
+<!--        <a-button @click="batchDelete">删除</a-button>-->
       </div>
       <!-- 表格区域 -->
       <a-table ref="TableInfo"
@@ -78,7 +78,7 @@
           </template>
         </template>
         <template slot="operation" slot-scope="text, record">
-          <a-icon type="setting" theme="twoTone" twoToneColor="#4a9ff5" @click="edit(record)" title="修 改" style="margin-right: 10px"></a-icon>
+          <a-icon type="setting" theme="twoTone" twoToneColor="#4a9ff5" @click="edit(record)" title="修 改" style="margin-right: 10px" v-if="record.checkDate === null"></a-icon>
           <a-icon type="bulb" @click="view(record)" title="详 情"></a-icon>
         </template>
       </a-table>
@@ -270,7 +270,7 @@ export default {
     },
     handleinspectionEditSuccess () {
       this.inspectionEdit.visiable = false
-      this.$message.success('修改巡检成功')
+      this.$message.success('巡检打卡成功')
       this.search()
     },
     handleDeptChange (value) {
@@ -361,6 +361,7 @@ export default {
       if (!params.sex) {
         delete params.sex
       }
+      params.staffId = this.currentUser.userId
       this.$get('/cos/safety-inspection/page', {
         ...params
       }).then((r) => {

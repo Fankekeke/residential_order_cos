@@ -22,16 +22,13 @@
         <a-col :span="8"><b>联系电话：</b>
           {{ repairData.phone }}
         </a-col>
-        <a-col :span="8"><b>上次登陆时间：</b>
-          {{ repairData.lastTime !== null ? repairData.lastTime : '- -' }}
+        <a-col :span="8"><b>维修编号：</b>
+          {{ repairData.code }}
         </a-col>
       </a-row>
       <br/>
       <a-row style="padding-left: 24px;padding-right: 24px;">
-        <a-col :span="8"><b>维修编号：</b>
-          {{ repairData.code }}
-        </a-col>
-        <a-col :span="16"><b>维修内容：</b>
+        <a-col :span="24"><b>维修内容：</b>
           {{ repairData.content }}
         </a-col>
       </a-row>

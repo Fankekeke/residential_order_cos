@@ -428,6 +428,7 @@ export default {
       if (params.repairType === undefined) {
         delete params.repairType
       }
+      params.type = 1
       this.$get('/cos/repair-info/page', {
         ...params
       }).then((r) => {

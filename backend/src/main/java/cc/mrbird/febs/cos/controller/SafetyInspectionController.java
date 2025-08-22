@@ -64,7 +64,6 @@ public class SafetyInspectionController {
      */
     @PostMapping
     public R save(SafetyInspection safetyInspection) {
-        safetyInspection.setCheckDate(DateUtil.formatDateTime(new Date()));
         return R.ok(safetyInspectionService.save(safetyInspection));
     }
 
@@ -76,6 +75,7 @@ public class SafetyInspectionController {
      */
     @PutMapping
     public R edit(SafetyInspection safetyInspection) {
+        safetyInspection.setCheckDate(DateUtil.formatDateTime(new Date()));
         return R.ok(safetyInspectionService.updateById(safetyInspection));
     }
 

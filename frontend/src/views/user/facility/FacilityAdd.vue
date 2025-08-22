@@ -11,43 +11,67 @@
     <a-form :form="form" layout="vertical">
       <a-row :gutter="20">
         <a-col :span="12">
-          <a-form-item label='房屋地址' v-bind="formItemLayout">
-            <a-input v-model="housesData.address" disabled/>
+          <a-form-item label='设备名称' v-bind="formItemLayout">
+            <a-input v-decorator="[
+            'deviceName',
+            { rules: [{ required: true, message: '请输入名称!' }] }
+            ]"/>
           </a-form-item>
         </a-col>
         <a-col :span="12">
-          <a-form-item label='用户姓名' v-bind="formItemLayout">
-            <a-input v-model="housesData.buyer" disabled/>
+          <a-form-item label='负责人' v-bind="formItemLayout">
+            <a-input v-decorator="[
+            'deviceCharge',
+            { rules: [{ required: true, message: '请输入负责人!' }] }
+            ]"/>
           </a-form-item>
         </a-col>
         <a-col :span="12">
-          <a-form-item label='维修类型' v-bind="formItemLayout">
-            <a-select allowClear v-decorator="[
-              'repairType',
-              { rules: [{ required: true, message: '请输入维修类型!' }] }
+          <a-form-item label='联系方式' v-bind="formItemLayout">
+            <a-input v-decorator="[
+            'phone',
+            { rules: [{ required: true, message: '请输入联系方式!' }] }
+            ]"/>
+          </a-form-item>
+        </a-col>
+        <a-col :span="12">
+          <a-form-item label='设备类型' v-bind="formItemLayout">
+            <a-input v-decorator="[
+            'type',
+            { rules: [{ required: true, message: '请输入设备类型!' }] }
+            ]"/>
+          </a-form-item>
+        </a-col>
+        <a-col :span="12">
+          <a-form-item label='设备地址' v-bind="formItemLayout">
+            <a-input v-decorator="[
+            'address',
+            { rules: [{ required: true, message: '请输入设备地址!' }] }
+            ]"/>
+          </a-form-item>
+        </a-col>
+        <a-col :span="12">
+          <a-form-item label='设备状态' v-bind="formItemLayout">
+            <a-select v-decorator="[
+              'status',
+              { rules: [{ required: true, message: '请输入设备状态!' }] }
               ]">
-              <a-select-option value="1">上下水管道</a-select-option>
-              <a-select-option value="2">落水管</a-select-option>
-              <a-select-option value="3">水箱</a-select-option>
-              <a-select-option value="4">天线</a-select-option>
-              <a-select-option value="5">供电线路</a-select-option>
-              <a-select-option value="6">通讯线路</a-select-option>
-              <a-select-option value="7">照明</a-select-option>
-              <a-select-option value="8">供气线路</a-select-option>
-              <a-select-option value="9">消防设施</a-select-option>
+              <a-select-option value="0">废弃</a-select-option>
+              <a-select-option value="1">正常</a-select-option>
+              <a-select-option value="2">维修保养中</a-select-option>
             </a-select>
           </a-form-item>
         </a-col>
         <a-col :span="24">
-          <a-form-item label='维修内容' v-bind="formItemLayout">
-            <a-textarea :auto-size="{ minRows: 3, maxRows: 5 }" v-decorator="[
+          <a-form-item label='备注' v-bind="formItemLayout">
+            <a-textarea :rows="4" v-decorator="[
             'content',
-            { rules: [{ required: true, message: '请输入维修内容!' }] }
+             { rules: [{ required: true, message: '请输入备注消息!' }] }
             ]"/>
           </a-form-item>
         </a-col>
         <a-col :span="24">
-          <a-form-item label='照片' v-bind="formItemLayout">
+          <a-form-item label='设备图片' v-bind="formItemLayout">
             <a-upload
               name="avatar"
               action="http://127.0.0.1:9527/file/fileUpload/"
@@ -56,7 +80,7 @@
               @preview="handlePreview"
               @change="picHandleChange"
             >
-              <div v-if="fileList.length < 8">
+              <div v-if="fileList.length < 1">
                 <a-icon type="plus" />
                 <div class="ant-upload-text">
                   Upload
@@ -151,6 +175,7 @@ export default {
         values.image = images.length > 0 ? images.join(',') : null
         values.housesId = this.housesData.id
         values.userId = this.currentUser.userId
+        values.type = 2
         if (!err) {
           this.loading = true
           this.$post('/cos/repair-info', {

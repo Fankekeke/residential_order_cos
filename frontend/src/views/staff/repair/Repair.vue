@@ -429,6 +429,7 @@ export default {
         delete params.repairType
       }
       params.staffId = this.currentUser.userId
+      params.type = 1
       this.$get('/cos/repair-info/page', {
         ...params
       }).then((r) => {

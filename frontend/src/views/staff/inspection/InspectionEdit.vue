@@ -1,5 +1,5 @@
 <template>
-  <a-modal v-model="show" title="修改巡检" @cancel="onClose" :width="800">
+  <a-modal v-model="show" title="巡检打卡" @cancel="onClose" :width="800">
     <template slot="footer">
       <a-button key="back" @click="onClose">
         取消
@@ -12,7 +12,7 @@
       <a-row :gutter="20">
         <a-col :span="12">
           <a-form-item label='选择员工' v-bind="formItemLayout">
-            <a-select allowClear v-decorator="[
+            <a-select allowClear disabled v-decorator="[
               'staffId',
               { rules: [{ required: true, message: '请输入员工姓名!' }] }
               ]">
@@ -22,7 +22,7 @@
         </a-col>
         <a-col :span="12">
           <a-form-item label='设施名称' v-bind="formItemLayout">
-            <a-input v-decorator="[
+            <a-input disabled v-decorator="[
             'stationName',
             { rules: [{ required: true, message: '请输入设施名称!' }] }
             ]"/>
@@ -30,7 +30,7 @@
         </a-col>
         <a-col :span="12">
           <a-form-item label='检查类型' v-bind="formItemLayout">
-            <a-select allowClear v-decorator="[
+            <a-select disabled allowClear v-decorator="[
               'checkType',
               { rules: [{ required: true, message: '请选择检查类型!' }] }
               ]">
@@ -42,7 +42,7 @@
         </a-col>
         <a-col :span="24">
           <a-form-item label='巡检内容' v-bind="formItemLayout">
-            <a-textarea :rows="6" v-decorator="[
+            <a-textarea disabled :rows="6" v-decorator="[
             'content',
              { rules: [{ required: true, message: '请输入巡检内容!' }] }
             ]"/>

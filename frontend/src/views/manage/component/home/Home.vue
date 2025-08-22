@@ -236,7 +236,7 @@ export default {
           height: 300
         },
         title: {
-          text: '近十天维修收益统计',
+          text: '近十天维修投诉统计',
           align: 'left'
         },
         plotOptions: {
@@ -267,7 +267,7 @@ export default {
         tooltip: {
           y: {
             formatter: function (val) {
-              return val + ' 元'
+              return val + ' 件'
             }
           }
         }

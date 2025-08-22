@@ -62,6 +62,9 @@
         <if test="repairInfo.repairLevel != null and repairInfo.repairLevel != ''">
             AND ri.repair_level = #{repairInfo.repairLevel}
         </if>
+        <if test="repairInfo.type != null and repairInfo.type != ''">
+            AND ri.type = #{repairInfo.type}
+        </if>
         <if test="repairInfo.userId != null and repairInfo.userId != ''">
             AND oi.user_id = #{repairInfo.userId}
         </if>
@@ -160,7 +163,6 @@
                 DATE_FORMAT( oi.pay_date, '%Y%m' ) = DATE_FORMAT(
                     CURDATE(),
                     '%Y%m')
-          AND oi.repair_status = 2
     </select>
 
     <!-- 本年收益 -->
@@ -185,7 +187,6 @@
                 DATE_FORMAT( oi.pay_date, '%Y' ) = DATE_FORMAT(
                     CURDATE(),
                     '%Y')
-          AND oi.repair_status = 2
     </select>
 
     <!-- 获取总维修工单 -->
@@ -194,7 +195,6 @@
             IFNULL(COUNT(pr.id), 0)
         FROM
             repair_info pr
-        WHERE pr.repair_status = 2
     </select>
 
     <!-- 查询十天内缴费统计 -->
@@ -262,7 +262,6 @@
             DATE_SUB( curdate(), INTERVAL + 9 DAY )) spo
             LEFT JOIN repair_info oi ON (
             DATE_FORMAT( oi.pay_date, '%Y-%m-%d' ) = DATE_FORMAT( spo.days, '%Y-%m-%d' )
-            AND oi.repair_status = '2'
             )
         GROUP BY
             days
@@ -286,7 +285,6 @@
         <if test="month != null and month != ''">
             AND DATE_FORMAT(oi.pay_date, '%c') = #{month}
         </if>
-        AND oi.repair_status = 2
         )
         where
         1 = 1
@@ -310,7 +308,6 @@
         <if test="month != null and month != ''">
             AND DATE_FORMAT(oi.pay_date, '%c') = #{month}
         </if>
-        AND oi.repair_status = 2
         )
         where
         1 = 1
@@ -388,7 +385,6 @@
         <if test="month != null and month != ''">
             AND DATE_FORMAT(oi.pay_date, '%c') = #{month}
         </if>
-        AND oi.repair_status = 2
         )
         where
         1 = 1
@@ -466,7 +462,6 @@
         <if test="month != null and month != ''">
             AND DATE_FORMAT(oi.pay_date, '%c') = #{month}
         </if>
-        AND oi.repair_status = 2
         )
         where
         1 = 1
