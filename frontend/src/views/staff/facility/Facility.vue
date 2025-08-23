@@ -66,7 +66,7 @@
     </div>
     <div>
       <div class="operator">
-        <a-button type="primary" ghost @click="add">新增</a-button>
+<!--        <a-button type="primary" ghost @click="add">新增</a-button>-->
 <!--        <a-button @click="batchDelete">删除</a-button>-->
       </div>
       <!-- 表格区域 -->
@@ -107,6 +107,8 @@
         </template>
         <template slot="operation" slot-scope="text, record">
           <a-icon type="audit" @click="edit(record)" title="修 改"></a-icon>
+<!--          <a-icon v-if="record.evaluateFlag == null && record.repairStatus ==  2 && record.payDate != null" type="reconciliation" theme="twoTone" twoToneColor="#4a9ff5" @click="orderEvaluateOpen(record)" title="评 价" style="margin-left: 15px"></a-icon>-->
+<!--          <a-icon v-if="record.complaintFlag == null && record.repairStatus ==  2 && record.payDate != null" type="alert" theme="twoTone" twoToneColor="#4a9ff5" @click="orderComplaintOpen(record)" title="投诉" style="margin-left: 15px"></a-icon>-->
         </template>
       </a-table>
     </div>
@@ -442,8 +444,8 @@ export default {
       if (params.repairStatus === undefined) {
         delete params.repairStatus
       }
-      params.userId = this.currentUser.userId
       params.type = 2
+      params.staffId = this.currentUser.userId
       this.$get('/cos/repair-info/page', {
         ...params
       }).then((r) => {

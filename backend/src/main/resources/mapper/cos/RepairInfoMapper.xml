@@ -20,6 +20,7 @@
         ri.repair_date,
         ri.user_id,
         ri.device_id,
+        ri.repair_fix_type,
         oi.name,
         oi.phone,
         hi.address,
@@ -160,7 +161,7 @@
         FROM
             repair_info oi
         WHERE
-                DATE_FORMAT( oi.pay_date, '%Y%m' ) = DATE_FORMAT(
+                DATE_FORMAT( oi.create_date, '%Y%m' ) = DATE_FORMAT(
                     CURDATE(),
                     '%Y%m')
     </select>
@@ -184,7 +185,7 @@
         FROM
             repair_info oi
         WHERE
-                DATE_FORMAT( oi.pay_date, '%Y' ) = DATE_FORMAT(
+                DATE_FORMAT( oi.create_date, '%Y' ) = DATE_FORMAT(
                     CURDATE(),
                     '%Y')
     </select>
@@ -261,7 +262,7 @@
             SELECT
             DATE_SUB( curdate(), INTERVAL + 9 DAY )) spo
             LEFT JOIN repair_info oi ON (
-            DATE_FORMAT( oi.pay_date, '%Y-%m-%d' ) = DATE_FORMAT( spo.days, '%Y-%m-%d' )
+            DATE_FORMAT( oi.create_date, '%Y-%m-%d' ) = DATE_FORMAT( spo.days, '%Y-%m-%d' )
             )
         GROUP BY
             days
@@ -280,10 +281,10 @@
         left join park_order_info oi on
         (rt.id = oi.space_id
         <if test="year != null and year != ''">
-            AND DATE_FORMAT(oi.pay_date, '%Y') = #{year}
+            AND DATE_FORMAT(oi.create_date, '%Y') = #{year}
         </if>
         <if test="month != null and month != ''">
-            AND DATE_FORMAT(oi.pay_date, '%c') = #{month}
+            AND DATE_FORMAT(oi.create_date, '%c') = #{month}
         </if>
         )
         where
@@ -292,7 +293,6 @@
         rt.id
     </select>
 
-    <!-- 房间类型销售比率统计 -->
     <select id="selectTypePriceRateByMonth" resultType="java.util.LinkedHashMap">
         select
         rt.id,
@@ -303,10 +303,10 @@
         left join park_order_info oi on
         (rt.id = oi.space_id
         <if test="year != null and year != ''">
-            AND DATE_FORMAT(oi.pay_date, '%Y') = #{year}
+            AND DATE_FORMAT(oi.create_date, '%Y') = #{year}
         </if>
         <if test="month != null and month != ''">
-            AND DATE_FORMAT(oi.pay_date, '%c') = #{month}
+            AND DATE_FORMAT(oi.create_date, '%c') = #{month}
         </if>
         )
         where
@@ -378,12 +378,12 @@
         select
         date_add(#{checkDate}, interval-day(#{checkDate})+ 1 day))) as tempDay
         left join repair_info oi on
-        (DATE_FORMAT( oi.pay_date, '%Y-%m-%d' ) = DATE_FORMAT( tempDay.date, '%Y-%m-%d')
+        (DATE_FORMAT( oi.create_date, '%Y-%m-%d' ) = DATE_FORMAT( tempDay.date, '%Y-%m-%d')
         <if test="year != null and year != ''">
-            AND DATE_FORMAT(oi.pay_date, '%Y') = #{year}
+            AND DATE_FORMAT(oi.create_date, '%Y') = #{year}
         </if>
         <if test="month != null and month != ''">
-            AND DATE_FORMAT(oi.pay_date, '%c') = #{month}
+            AND DATE_FORMAT(oi.create_date, '%c') = #{month}
         </if>
         )
         where
@@ -455,12 +455,12 @@
         select
         date_add(#{checkDate}, interval-day(#{checkDate})+ 1 day))) as tempDay
         left join repair_info oi on
-        (DATE_FORMAT( oi.pay_date, '%Y-%m-%d' ) = DATE_FORMAT( tempDay.date, '%Y-%m-%d')
+        (DATE_FORMAT( oi.create_date, '%Y-%m-%d' ) = DATE_FORMAT( tempDay.date, '%Y-%m-%d')
         <if test="year != null and year != ''">
-            AND DATE_FORMAT(oi.pay_date, '%Y') = #{year}
+            AND DATE_FORMAT(oi.create_date, '%Y') = #{year}
         </if>
         <if test="month != null and month != ''">
-            AND DATE_FORMAT(oi.pay_date, '%c') = #{month}
+            AND DATE_FORMAT(oi.create_date, '%c') = #{month}
         </if>
         )
         where

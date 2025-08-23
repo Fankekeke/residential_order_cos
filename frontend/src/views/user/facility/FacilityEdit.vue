@@ -51,15 +51,7 @@
       <br/>
       <a-row style="padding-left: 24px;padding-right: 24px;">
         <a-col :span="8"><b>维修类型：</b>
-          <span v-if="repairData.repairType == 1">上下水管道</span>
-          <span v-if="repairData.repairType == 2">落水管</span>
-          <span v-if="repairData.repairType == 3">水箱</span>
-          <span v-if="repairData.repairType == 4">天线</span>
-          <span v-if="repairData.repairType == 5">供电线路</span>
-          <span v-if="repairData.repairType == 6">通讯线路</span>
-          <span v-if="repairData.repairType == 7">照明</span>
-          <span v-if="repairData.repairType == 8">供气线路</span>
-          <span v-if="repairData.repairType == 9">消防设施</span>
+          <span>{{ repairData.repairFixType }}</span>
         </a-col>
         <a-col :span="8"><b>维修状态：</b>
           <span v-if="repairData.repairStatus == 0">未派修</span>
@@ -72,32 +64,10 @@
         </a-col>
       </a-row>
       <br/>
-      <a-row style="padding-left: 24px;padding-right: 24px;">
-        <a-col :span="8"><b>房屋地址：</b>
-          <a-tooltip>
-            <template slot="title">
-              {{ repairData.address }}
-            </template>
-            {{ repairData.address.slice(0, 10) }} ...
-          </a-tooltip>
-        </a-col>
-        <a-col :span="8"><b>房间号：</b>
-          {{ repairData.number }} 室
-        </a-col>
-        <a-col :span="8"><b>楼层：</b>
-          {{ repairData.floor }} 层
-        </a-col>
-      </a-row>
       <br/>
       <a-row style="padding-left: 24px;padding-right: 24px;">
         <a-col :span="8"><b>维修时间：</b>
           {{ repairData.repairDate }}
-        </a-col>
-        <a-col :span="8"><b>总价格：</b>
-          {{ repairData.totalPrice }} 元
-        </a-col>
-        <a-col :span="8"><b>支付时间：</b>
-          {{ repairData.payDate }}
         </a-col>
       </a-row>
       <br/>

@@ -148,7 +148,7 @@ export default {
         images.push(image.response)
       })
       this.form.validateFields((err, values) => {
-        values.image = images.length > 0 ? images.join(',') : null
+        values.images = images.length > 0 ? images.join(',') : null
         values.housesId = this.housesData.id
         values.userId = this.currentUser.userId
         if (!err) {
