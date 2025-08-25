@@ -72,6 +72,7 @@
         <if test="repairInfo.staffId != null">
             AND wi.user_id = #{repairInfo.staffId}
         </if>
+        ri.repair_type
         ORDER BY ri.create_date
     </select>
 

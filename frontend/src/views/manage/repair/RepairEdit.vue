@@ -133,7 +133,7 @@
       </a-row>
       <br/>
       <br/>
-      <a-row style="padding-left: 24px;padding-right: 24px;" :gutter="15" v-if="repairData.worker == null && repairData.repairStatus == 1">
+      <a-row style="padding-left: 24px;padding-right: 24px;" :gutter="15" v-if="repairData.worker == null">
         <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">设置维修员工</span></a-col>
         <a-col :span="10">
           <a-select v-model="workerId" style="width: 100%">

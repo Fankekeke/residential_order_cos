@@ -180,9 +180,10 @@
         LEFT JOIN building_info bi ON ( bi.id = hi.building_id )
         LEFT JOIN owner_info oi ON ( oi.id = hi.owner_id )
         LEFT JOIN worker_info wi ON (wi.id = hi.staff_id)
-        LEFT JOIN repair_info ri ON (ri.houses_id = hi.id) AND ri.repair_status != 2
+        LEFT JOIN repair_info ri ON (ri.houses_id = hi.id) AND ri.repair_status != 3
         WHERE
         1 = 1
         AND oi.user_id = #{ userId }
+        GROUP BY hi.id
     </select>
 </mapper>
